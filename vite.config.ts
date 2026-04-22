@@ -15,6 +15,7 @@ export default defineConfig({
       '/api': {
         target: 'https://round2-bookreview-production.up.railway.app',
         changeOrigin: true,
+        secure: true,
       },
     },
   },
