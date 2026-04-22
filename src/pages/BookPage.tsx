@@ -29,8 +29,8 @@ export default function BookPage() {
 
   const fields = [
     { key: 'title', label: 'Title', required: true },
-    { key: 'quantity', label: 'Quantity', type: 'number' },
-    { key: 'authorId', label: 'Author', type: 'select', options: authors.map(a => ({ value: String(a.id), label: a.name })) },
+    { key: 'quantity', label: 'Quantity', type: 'number' as const },
+    { key: 'authorId', label: 'Author', type: 'select' as const, options: authors.map(a => ({ value: String(a.id), label: a.name })) },
   ]
 
   return (
@@ -53,7 +53,7 @@ export default function BookPage() {
         <CrudForm
           fields={fields}
           initial={item}
-          onSubmit={handleSubmit as any}
+          onSubmit={handleSubmit}
           onCancel={onSuccess}
         />
       )}

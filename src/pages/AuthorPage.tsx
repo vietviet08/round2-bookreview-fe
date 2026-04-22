@@ -39,7 +39,7 @@ export default function AuthorPage() {
         <CrudForm
           fields={[{ key: 'name', label: 'Name', required: true }]}
           initial={item}
-          onSubmit={handleSubmit as any}
+          onSubmit={handleSubmit}
           onCancel={onSuccess}
         />
       )}

@@ -41,11 +41,11 @@ export default function ReviewPage() {
       renderForm={({ item, onSuccess }) => (
         <CrudForm
           fields={[
-            { key: 'content', label: 'Content', required: true, type: 'textarea' },
-            { key: 'bookId', label: 'Book', type: 'select', options: books.map(b => ({ value: String(b.id), label: b.title })) },
+            { key: 'content', label: 'Content', required: true, type: 'textarea' as const },
+            { key: 'bookId', label: 'Book', type: 'select' as const, options: books.map(b => ({ value: String(b.id), label: b.title })) },
           ]}
           initial={item}
-          onSubmit={handleSubmit as any}
+          onSubmit={handleSubmit}
           onCancel={onSuccess}
         />
       )}
