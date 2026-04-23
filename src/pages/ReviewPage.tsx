@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { api, Review, Book, PageResponse } from '@/lib/api'
 import CrudList from '@/components/CrudList'
-import CrudForm from '@/components/CrudForm'
 
 export default function ReviewPage() {
   const [data, setData] = useState<PageResponse<Review>>()
-  const [books, setBooks] = useState<Book[]>([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -15,14 +13,6 @@ export default function ReviewPage() {
   }
 
   useEffect(() => { load(page) }, [page])
-  useEffect(() => { api.books.all().then(res => setBooks(Array.isArray(res) ? res : res.content ?? [])) }, [])
-
-  const handleSubmit = async (formData: Partial<Review>) => {
-    const payload = { content: formData.content ?? '', bookId: formData.bookId }
-    if (formData.id) await api.reviews.update(formData.id as number, payload)
-    else await api.reviews.create(payload)
-    load(page)
-  }
 
   return (
     <CrudList
@@ -38,17 +28,6 @@ export default function ReviewPage() {
       totalPages={data?.totalPages ?? 0}
       onPageChange={setPage}
       onDelete={async (item) => { if (item.id) await api.reviews.delete(item.id); load(page) }}
-      renderForm={({ item, onSuccess }) => (
-        <CrudForm
-          fields={[
-            { key: 'content', label: 'Content', required: true, type: 'textarea' as const },
-            { key: 'bookId', label: 'Book', type: 'select' as const, options: books.map(b => ({ value: String(b.id), label: b.title })) },
-          ]}
-          initial={item}
-          onSubmit={handleSubmit}
-          onCancel={onSuccess}
-        />
-      )}
     />
   )
 }

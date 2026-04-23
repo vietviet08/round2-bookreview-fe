@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { api, Book, Author, PageResponse } from '@/lib/api'
 import CrudList from '@/components/CrudList'
-import CrudForm from '@/components/CrudForm'
 
 export default function BookPage() {
   const [data, setData] = useState<PageResponse<Book>>()
-  const [authors, setAuthors] = useState<Author[]>([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -15,23 +13,6 @@ export default function BookPage() {
   }
 
   useEffect(() => { load(page) }, [page])
-  useEffect(() => { api.authors.all().then(res => setAuthors(Array.isArray(res) ? res : res.content ?? [])) }, [])
-
-  const handleSubmit = async (formData: Partial<Book>) => {
-    const payload = { title: formData.title ?? '', quantity: formData.quantity, authorId: formData.authorId }
-    if (formData.id) {
-      await api.books.update(formData.id as number, payload)
-    } else {
-      await api.books.create(payload)
-    }
-    load(page)
-  }
-
-  const fields = [
-    { key: 'title', label: 'Title', required: true },
-    { key: 'quantity', label: 'Quantity', type: 'number' as const },
-    { key: 'authorId', label: 'Author', type: 'select' as const, options: authors.map(a => ({ value: String(a.id), label: a.name })) },
-  ]
 
   return (
     <CrudList
@@ -49,14 +30,6 @@ export default function BookPage() {
       onPageChange={setPage}
       onDelete={async (item) => { if (item.id) await api.books.delete(item.id); load(page) }}
       deleteLabel={(item) => item.title}
-      renderForm={({ item, onSuccess }) => (
-        <CrudForm
-          fields={fields}
-          initial={item}
-          onSubmit={handleSubmit}
-          onCancel={onSuccess}
-        />
-      )}
     />
   )
 }

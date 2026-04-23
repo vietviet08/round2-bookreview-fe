@@ -3,8 +3,11 @@ import { useState } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import AuthorPage from '@/pages/AuthorPage'
+import AuthorCreatePage from '@/pages/AuthorCreatePage'
 import BookPage from '@/pages/BookPage'
+import BookCreatePage from '@/pages/BookCreatePage'
 import ReviewPage from '@/pages/ReviewPage'
+import ReviewCreatePage from '@/pages/ReviewCreatePage'
 
 const menuItems = [
   { label: 'Author', path: '/authors', icon: '👤' },
@@ -99,9 +102,12 @@ export default function App() {
           <main className="flex-1 p-6">
             <Routes>
               <Route path="/" element={<div className="flex flex-col items-center justify-center h-full text-muted-foreground"><p className="text-lg">Welcome to Haibazo Book Review</p><p className="text-sm mt-1">Select a menu from the sidebar</p></div>} />
-              <Route path="/authors/*" element={<AuthorPage />} />
-              <Route path="/books/*" element={<BookPage />} />
-              <Route path="/reviews/*" element={<ReviewPage />} />
+              <Route path="/authors" element={<AuthorPage />} />
+              <Route path="/authors/create" element={<AuthorCreatePage />} />
+              <Route path="/books" element={<BookPage />} />
+              <Route path="/books/create" element={<BookCreatePage />} />
+              <Route path="/reviews" element={<ReviewPage />} />
+              <Route path="/reviews/create" element={<ReviewCreatePage />} />
             </Routes>
           </main>
         </div>

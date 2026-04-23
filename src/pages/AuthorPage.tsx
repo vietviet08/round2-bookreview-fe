@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { api, Author, PageResponse } from '@/lib/api'
 import CrudList from '@/components/CrudList'
-import CrudForm from '@/components/CrudForm'
+import { useNavigate } from 'react-router-dom'
 
 export default function AuthorPage() {
+  const navigate = useNavigate()
   const [data, setData] = useState<PageResponse<Author>>()
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -14,15 +15,6 @@ export default function AuthorPage() {
   }
 
   useEffect(() => { load(page) }, [page])
-
-  const handleSubmit = async (formData: Partial<Author>) => {
-    if (formData.id) {
-      await api.authors.update(formData.id as number, { name: formData.name ?? '' })
-    } else {
-      await api.authors.create({ name: formData.name ?? '' })
-    }
-    load(page)
-  }
 
   return (
     <CrudList
@@ -35,14 +27,6 @@ export default function AuthorPage() {
       onPageChange={setPage}
       onDelete={async (item) => { if (item.id) await api.authors.delete(item.id); load(page) }}
       deleteLabel={(item) => item.name}
-      renderForm={({ item, onSuccess }) => (
-        <CrudForm
-          fields={[{ key: 'name', label: 'Name', required: true }]}
-          initial={item}
-          onSubmit={handleSubmit}
-          onCancel={onSuccess}
-        />
-      )}
     />
   )
 }
